@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+<!-- jidokaacademy.course tree view -->
+<record id="jidokaacademy.course_view_tree" model="ir.ui.view">
+    <field name="name">jidokaacademy.course.view.tree</field>
+    <field name="model">jidokaacademy.course</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name"/>
+            <field name="user_id"/>
+            <field name="description"/>
+        </tree>
+    </field>
+</record>
+
+<!-- jidokaacademy.course form view -->
+<record id="jidokaacademy.course_view_form" model="ir.ui.view">
+    <field name="name">jidokaacademy.course.view.form</field>
+    <field name="model">jidokaacademy.course</field>
+    <field name="arch" type="xml">
+        <form string="">
+            <sheet>
+                <group>
+                    <field name="name"/>
+                    <field name="user_id"/>                    
+                </group>
+                <notebook>
+                    <page string="Description" name="description">                        
+                        <field name="description"/>                        
+                    </page>
+                    <page string="Sessions" name="session_ids">                        
+                        <field name="session_ids"/>                        
+                    </page>
+                </notebook>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<!-- jidokaacademy.course search view -->
+<record id="jidokaacademy.course_view_search" model="ir.ui.view">
+    <field name="name">jidokaacademy.course.view.search</field>
+    <field name="model">jidokaacademy.course</field>
+    <field name="arch" type="xml">
+        <search string="Search Description">
+            <field name="name"/>
+            <field name="description"/>
+            <filter name="my_course" string="My Course"
+                    domain="[('user_id', '=', uid)]"/>
+            <group string="Group By">
+                <filter name="group_by_user" string="Responsible"
+                        context="{'group_by': 'user_id'}"/>
+            </group>
+        </search>
+    </field>
+</record>
+
+<!-- jidokaacademy.course action window -->
+<record id="jidokaacademy.course_action" model="ir.actions.act_window">
+    <field name="name">Course</field>    
+    <field name="res_model">jidokaacademy.course</field>
+    <field name="view_mode">tree,form</field>    
+    <field name="context">{'search_default_my_course':1}</field>
+</record>
+
+    <!-- This Menu Item will appear in the Upper bar, that's why It needs NO parent or action -->
+    <menuitem id="jidokaacademy_menu_root" name="Jidoka Academy" sequence="20"/>
+
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="course_menu_act" name="Course" parent="jidokaacademy_menu_root" action="jidokaacademy.course_action" sequence="10"/>
+
+</odoo>

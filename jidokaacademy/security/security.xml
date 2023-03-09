@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    
+    <record id="jidokaacademy" model="ir.module.category">
+        <field name="name">Jidoka Academy</field>
+    </record>
+
+    <record id="jidokaacademy_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="jidokaacademy.jidokaacademy"/>
+    </record>
+
+    <record id="jidokaacademy_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="jidokaacademy.jidokaacademy"/>
+    </record>
+
+    <record id="only_responsible_can_modify" model="ir.rule">
+        <field name="name">Only responsible can modify</field>
+        <field name="model_id" ref="jidokaacademy.model_jidokaacademy_course"/>
+        <field name="groups" eval="[(4, ref('jidokaacademy.jidokaacademy_manager'))]"/>
+        <field name="perm_read" eval="0"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="1"/>
+        <field name="domain_force">['|',('user_id','=',user.id), ('user_id','=',False)]</field>
+    </record>
+
+
+</odoo>
