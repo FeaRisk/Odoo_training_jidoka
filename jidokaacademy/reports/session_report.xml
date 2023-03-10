@@ -55,6 +55,7 @@
                                                 <th><span t-esc="partner.name"/></th>
                                                 <th><span t-esc="partner.email"/></th>
                                                 <th><span t-esc="partner.phone"/></th>
+                                                <t t-set="no" t-value='no+1'/>
                                             </tr>                                            
                                         </t>
                                     </table>

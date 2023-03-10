@@ -5,7 +5,7 @@
         <field name="name">jidokaacademy.session.view.tree</field>
         <field name="model">jidokaacademy.session</field>
         <field name="arch" type="xml">
-            <tree decoration-info="duration &lt; 5" decoration-danger="duration &gt; 15">
+            <tree decoration-danger="duration &lt; 5" decoration-info="duration &gt; 15">
                 <field name="name"/>
                 <field name="start_date"/>
                 <field name="number_of_seats"/>
@@ -13,6 +13,7 @@
                 <field name="partner_id"/>
                 <field name="course_id"/>
                 <field name="duration"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
@@ -23,30 +24,43 @@
         <field name="model">jidokaacademy.session</field>
         <field name="arch" type="xml">
             <form string="">
+                <header>
+                    <button name="action_confirm" type="object" string="Confirm" class="btn-success" states="draft"/>
+                    <button name="action_done" type="object" string="Done" class="btn-success" states="confirm"/>
+                    <button name="action_cancel" type="object" string="Cancel" class="btn-danger" states="confirm,done" confirm="Yakin ingin cancel data ini?"/>
+                    <button name="action_reset" type="object" string="Reset to Draft" class="btn-danger" states="cancel" confirm="Yaking ingin reset data ke draft?"/>
+
+
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
-                            <field name="name"/>                        
-                            <field name="course_id"/>
-                            <field name="partner_id"/>
-                            <field name="active"/>
+                            <field name="name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>                        
+                            <field name="course_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="partner_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="active" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                         <group>
-                            <field name="number_of_seats"/>
-                            <field name="duration"/>
-                            <field name="start_date"/>   
+                            <field name="number_of_seats" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="duration" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="start_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>   
                             <field name="taken_seats" widget="progressbar"/>                     
                         </group>
                     </group>
                     <notebook>
                         <page string="Description" name="description">                        
-                            <field name="description"/>
+                            <field name="description" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </page>
                         <page string="Attendance" name="partner_ids">                        
-                            <field name="partner_ids"/>
+                            <field name="partner_ids" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
             </form>
         </field>
     </record>
